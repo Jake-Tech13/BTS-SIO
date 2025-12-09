@@ -1,10 +1,10 @@
 <?php
-class ConnexionBD {
+class Connexion {
     public static function connexionPDO() {
-        $login = "dufourgi";
-        $mdp = "05022006";
-        $bd = "flotte_bd";
-        $serveur = "192.168.20.15"; #mariadb.btssiobayonne.fr
+        $login = "root"; //dufourgi
+        $mdp = ""; //05022006
+        $bd = "flotte_db"; //flotte_bd
+        $serveur = "127.0.0.1"; #mariadb.btssiobayonne.fr //192.168.20.15
 
         try {
             $conn = new PDO("mysql:host=$serveur;dbname=$bd", $login, $mdp, array(PDO::MYSQL_ATTR_INIT_COMMAND => 'SET NAMES \'UTF8\'')); 
@@ -20,7 +20,7 @@ class ConnexionBD {
             header('Content-Type:text/plain');
 
             echo "connexionPDO() : \n";
-            print_r(connexionPDO());
+            //print_r(connexionPDO());
         }
     }
 }
