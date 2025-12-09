@@ -1,7 +1,7 @@
 <?php
 
 class Client {
-    private int $idClient;
+    private ?int $id;
     private string $nom;
     private string $prenom;
     private string $raisonSociale;
@@ -12,11 +12,11 @@ class Client {
     private string $ville;
     private string $adresse;
     private string $numTVA;
-    private DateTime $dateCreation;
+    private string $dateCreation;
     
     // Getters
-    public function getId(): int {
-        return $this->idClient;
+    public function getId(): ?int {
+        return $this->id;
     }
     public function getNom(): string {
         return $this->nom;
@@ -48,13 +48,13 @@ class Client {
     public function getNumTVA(): string {
         return $this->numTVA;
     }
-    public function getDateCreation(): DateTime {
+    public function getDateCreation(): string {
         return $this->dateCreation;
     }
     
     // Setters
-    public function setID(int $id): void {
-        $this->idClient = $id;
+    public function setID(?int $id): void {
+        $this->id = $id;
     }
     public function setNom(string $nom): void {
         $this->nom = $nom;
@@ -63,7 +63,7 @@ class Client {
         $this->prenom = $prenom;
     }
     public function setRaisonSociale(string $raisonSociale): void {
-        $this->$raisonSociale = $raisonSociale;
+        $this->raisonSociale = $raisonSociale;
     }
     public function setEmail(string $email): void {
         $this->email = $email;
@@ -84,14 +84,14 @@ class Client {
         $this->adresse = $adresse;
     }
     public function setNumTVA(string $num): void {
-        $this->adresse = $num;
+        $this->numTVA = $num;
     }
-    public function setDateCreation(DateTime $date): void {
+    public function setDateCreation(string $date): void {
         $this->dateCreation = $date;
     }
-    // Constructeur
-    
-    public function __construct(int $id, string $nom, string $prenom, string $raisonSociale, string $email, string $telephone, string $mdp, string $codePostal, string $ville, string $adresse, string $numTVA, DateTime $date) {
+
+    // Constructeur    
+    public function __construct(?int $id = null, string $nom, string $prenom, string $raisonSociale, string $email, string $telephone, string $mdp, string $codePostal, string $ville, string $adresse, string $numTVA, ?string $dateCreation = null) {
         $this->id = $id;
         $this->nom = $nom;
         $this->prenom = $prenom;
@@ -103,14 +103,125 @@ class Client {
         $this->ville = $ville;
         $this->adresse = $adresse;
         $this->numTVA = $numTVA;
-        $this->dateCreation = $date;
+        $this->dateCreation = $dateCreation ?? date('Y-m-d');
     }
 
     // Méthodes
-    public function creerLivraison(array $listeCommandes): Commande {
-        $livraison = new Livraison($this, $listeCommandes);
-        return $livraison;
+    
+    /**
+     * Affiche les informations du client
+     */
+    public function afficherInfos(): string {
+        return "Client: {$this->prenom} {$this->nom} ({$this->raisonSociale}) - {$this->email} - {$this->telephone}";
     }
     
-    //public function
+    /**
+     * Valide l'email du client
+     */
+    public function validerEmail(): bool {
+        return filter_var($this->email, FILTER_VALIDATE_EMAIL) !== false;
+    }
+    
+    /**
+     * Valide le numéro TVA
+     */
+    public function validerNumTVA(): bool {
+        return !empty($this->numTVA) && strlen($this->numTVA) >= 5;
+    }
+    
+    /**
+     * Valide le code postal
+     */
+    public function validerCodePostal(): bool {
+        return !empty($this->codePostal) && preg_match('/^\d{5}$/', $this->codePostal);
+    }
+    
+    /**
+     * Valide tous les champs obligatoires
+     */
+    public function validerDonnees(): bool {
+        return !empty($this->nom) && 
+               !empty($this->prenom) && 
+               !empty($this->raisonSociale) &&
+               $this->validerEmail() &&
+               !empty($this->telephone) &&
+               !empty($this->mdp) &&
+               $this->validerCodePostal() &&
+               !empty($this->ville) &&
+               !empty($this->adresse) &&
+               $this->validerNumTVA();
+    }
+    
+    /**
+     * Retourne les informations du client en tableau
+     */
+    public function toArray(): array {
+        return [
+            'id' => $this->id,
+            'nom' => $this->nom,
+            'prenom' => $this->prenom,
+            'raisonSociale' => $this->raisonSociale,
+            'email' => $this->email,
+            'telephone' => $this->telephone,
+            'codePostal' => $this->codePostal,
+            'ville' => $this->ville,
+            'adresse' => $this->adresse,
+            'numTVA' => $this->numTVA,
+            'dateCreation' => $this->dateCreation
+        ];
+    }
+    
+    /**
+     * Compare deux clients
+     */
+    public function equals(Client $autre): bool {
+        return $this->id === $autre->id;
+    }
+    
+    /**
+     * Retourne le nom complet du client
+     */
+    public function getNomComplet(): string {
+        return "{$this->prenom} {$this->nom}";
+    }
+    
+    /**
+     * Retourne l'adresse complète
+     */
+    public function getAdresseComplete(): string {
+        return "{$this->adresse}, {$this->codePostal} {$this->ville}";
+    }
+    
+    // Méthodes de communication avec d'autres entités
+    
+    /**
+     * Crée une nouvelle livraison pour ce client
+     * @return Livraison La livraison créée
+     */
+    public function creerLivraison(int $idMarchandise, int $idDestinationDepot, float $poidsKg, float $volumeM3): Livraison {
+        return new Livraison(
+            $this->id ?? 0,
+            $idMarchandise,
+            $idDestinationDepot,
+            $poidsKg,
+            $volumeM3,
+            'prevue'
+        );
+    }
+    
+    /**
+     * Retourne le nombre de livraisons prévues pour ce client
+     * Note: Cette méthode nécessite l'accès au DAO
+     */
+    public function obtenirNombreLivraisonsActives(): string {
+        return "Utilisez LivraisonDAO::getLivraisonsByClient({$this->id}) pour récupérer les livraisons";
+    }
+    
+    /**
+     * Retourne les adresses de facturation du client
+     * Note: Utile pour les factures liées aux livraisons
+     */
+    public function obtenirAdresseFacturation(): string {
+        return "Client: {$this->getNomComplet()}, {$this->getAdresseComplete()}, TVA: {$this->numTVA}";
+    }
 }
