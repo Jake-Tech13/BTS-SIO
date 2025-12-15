@@ -9,6 +9,80 @@ class MaintenanceDAO {
         $this->bd = Connexion::connexionPDO();
     }
 
+    // ... (méthodes existantes...)
+
+    public function getByIdVehicule(int $idVehicule): array {
+        $res = [];
+        $req = $this->bd->prepare("SELECT * FROM maintenance WHERE id_vehicule = :val");
+        $req->execute([':val' => $idVehicule]);
+        while ($row = $req->fetch(PDO::FETCH_ASSOC)) { $res[] = $this->mapToMaintenance($row); }
+        return $res;
+    }
+
+    public function getByDateIntervention(string $date): array {
+        $res = [];
+        $req = $this->bd->prepare("SELECT * FROM maintenance WHERE date_intervention = :val");
+        $req->execute([':val' => $date]);
+        while ($row = $req->fetch(PDO::FETCH_ASSOC)) { $res[] = $this->mapToMaintenance($row); }
+        return $res;
+    }
+
+    public function getByTypeIntervention(string $type): array {
+        $res = [];
+        $req = $this->bd->prepare("SELECT * FROM maintenance WHERE type_intervention = :val");
+        $req->execute([':val' => $type]);
+        while ($row = $req->fetch(PDO::FETCH_ASSOC)) { $res[] = $this->mapToMaintenance($row); }
+        return $res;
+    }
+
+    public function getByDescription(string $desc): array {
+        $res = [];
+        $req = $this->bd->prepare("SELECT * FROM maintenance WHERE description = :val");
+        $req->execute([':val' => $desc]);
+        while ($row = $req->fetch(PDO::FETCH_ASSOC)) { $res[] = $this->mapToMaintenance($row); }
+        return $res;
+    }
+
+    public function getByCout(float $cout): array {
+        $res = [];
+        $req = $this->bd->prepare("SELECT * FROM maintenance WHERE cout = :val");
+        $req->execute([':val' => $cout]);
+        while ($row = $req->fetch(PDO::FETCH_ASSOC)) { $res[] = $this->mapToMaintenance($row); }
+        return $res;
+    }
+
+    public function getByOdometreKm(int $km): array {
+        $res = [];
+        $req = $this->bd->prepare("SELECT * FROM maintenance WHERE odometre_km = :val");
+        $req->execute([':val' => $km]);
+        while ($row = $req->fetch(PDO::FETCH_ASSOC)) { $res[] = $this->mapToMaintenance($row); }
+        return $res;
+    }
+
+    public function getByKmProchaineEcheance(int $km): array {
+        $res = [];
+        $req = $this->bd->prepare("SELECT * FROM maintenance WHERE km_prochaine_echeance = :val");
+        $req->execute([':val' => $km]);
+        while ($row = $req->fetch(PDO::FETCH_ASSOC)) { $res[] = $this->mapToMaintenance($row); }
+        return $res;
+    }
+
+    public function getByDateProchaineEcheance(string $date): array {
+        $res = [];
+        $req = $this->bd->prepare("SELECT * FROM maintenance WHERE date_prochaine_echeance = :val");
+        $req->execute([':val' => $date]);
+        while ($row = $req->fetch(PDO::FETCH_ASSOC)) { $res[] = $this->mapToMaintenance($row); }
+        return $res;
+    }
+
+    public function getByStatut(string $statut): array {
+        $res = [];
+        $req = $this->bd->prepare("SELECT * FROM maintenance WHERE statut = :val");
+        $req->execute([':val' => $statut]);
+        while ($row = $req->fetch(PDO::FETCH_ASSOC)) { $res[] = $this->mapToMaintenance($row); }
+        return $res;
+    }
+
     /**
      * Récupère l'historique complet d'un véhicule (Carnet d'entretien)
      */

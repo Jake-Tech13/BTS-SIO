@@ -16,6 +16,70 @@ class VehiculeDAO {
         return $row ? $this->mapToVehicule($row) : null;
     }
 
+    // L'immatriculation est UNIQUE
+    public function getByImmatriculation(string $immat): ?Vehicule {
+        $req = $this->bd->prepare("SELECT * FROM vehicule WHERE immatriculation = :val");
+        $req->execute([':val' => $immat]);
+        $row = $req->fetch(PDO::FETCH_ASSOC);
+        return $row ? $this->mapToVehicule($row) : null;
+    }
+
+    // Le Code VIN est souvent UNIQUE
+    public function getByCodeVin(string $vin): ?Vehicule {
+        $req = $this->bd->prepare("SELECT * FROM vehicule WHERE code_vin = :val");
+        $req->execute([':val' => $vin]);
+        $row = $req->fetch(PDO::FETCH_ASSOC);
+        return $row ? $this->mapToVehicule($row) : null;
+    }
+
+    public function getByModele(string $modele): array {
+        $res = [];
+        $req = $this->bd->prepare("SELECT * FROM vehicule WHERE modele = :val");
+        $req->execute([':val' => $modele]);
+        while ($row = $req->fetch(PDO::FETCH_ASSOC)) { $res[] = $this->mapToVehicule($row); }
+        return $res;
+    }
+
+    public function getByAnnee(int $annee): array {
+        $res = [];
+        $req = $this->bd->prepare("SELECT * FROM vehicule WHERE annee = :val");
+        $req->execute([':val' => $annee]);
+        while ($row = $req->fetch(PDO::FETCH_ASSOC)) { $res[] = $this->mapToVehicule($row); }
+        return $res;
+    }
+
+    public function getByCapaciteKg(float $capa): array {
+        $res = [];
+        $req = $this->bd->prepare("SELECT * FROM vehicule WHERE capacite_kg = :val");
+        $req->execute([':val' => $capa]);
+        while ($row = $req->fetch(PDO::FETCH_ASSOC)) { $res[] = $this->mapToVehicule($row); }
+        return $res;
+    }
+
+    public function getByCapaciteM3(float $capa): array {
+        $res = [];
+        $req = $this->bd->prepare("SELECT * FROM vehicule WHERE capacite_m3 = :val");
+        $req->execute([':val' => $capa]);
+        while ($row = $req->fetch(PDO::FETCH_ASSOC)) { $res[] = $this->mapToVehicule($row); }
+        return $res;
+    }
+
+    public function getByStatut(string $statut): array {
+        $res = [];
+        $req = $this->bd->prepare("SELECT * FROM vehicule WHERE statut = :val");
+        $req->execute([':val' => $statut]);
+        while ($row = $req->fetch(PDO::FETCH_ASSOC)) { $res[] = $this->mapToVehicule($row); }
+        return $res;
+    }
+
+    public function getByIdDepotActuel(int $idDepot): array {
+        $res = [];
+        $req = $this->bd->prepare("SELECT * FROM vehicule WHERE id_depot_actuel = :val");
+        $req->execute([':val' => $idDepot]);
+        while ($row = $req->fetch(PDO::FETCH_ASSOC)) { $res[] = $this->mapToVehicule($row); }
+        return $res;
+    }
+
     // --- MÉTHODES MÉTIER UTILES ---
 
     /**

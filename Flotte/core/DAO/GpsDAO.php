@@ -9,6 +9,49 @@ class GpsDAO {
         $this->bd = Connexion::connexionPDO();
     }
 
+    // ... (méthodes existantes...)
+
+    public function getByHorodatage(string $date): array {
+        $res = [];
+        // Recherche par date/heure exacte ou date seulement selon besoin. Ici date exacte.
+        $req = $this->bd->prepare("SELECT * FROM gps WHERE horodatage = :val");
+        $req->execute([':val' => $date]);
+        while ($row = $req->fetch(PDO::FETCH_ASSOC)) { $res[] = $this->mapToGps($row); }
+        return $res;
+    }
+
+    public function getByLatitude(float $lat): array {
+        $res = [];
+        $req = $this->bd->prepare("SELECT * FROM gps WHERE latitude = :val");
+        $req->execute([':val' => $lat]);
+        while ($row = $req->fetch(PDO::FETCH_ASSOC)) { $res[] = $this->mapToGps($row); }
+        return $res;
+    }
+
+    public function getByLongitude(float $lon): array {
+        $res = [];
+        $req = $this->bd->prepare("SELECT * FROM gps WHERE longitude = :val");
+        $req->execute([':val' => $lon]);
+        while ($row = $req->fetch(PDO::FETCH_ASSOC)) { $res[] = $this->mapToGps($row); }
+        return $res;
+    }
+
+    public function getByVitesseKmh(float $vitesse): array {
+        $res = [];
+        $req = $this->bd->prepare("SELECT * FROM gps WHERE vitesse_kmh = :val");
+        $req->execute([':val' => $vitesse]);
+        while ($row = $req->fetch(PDO::FETCH_ASSOC)) { $res[] = $this->mapToGps($row); }
+        return $res;
+    }
+
+    public function getByCap(float $cap): array {
+        $res = [];
+        $req = $this->bd->prepare("SELECT * FROM gps WHERE cap = :val");
+        $req->execute([':val' => $cap]);
+        while ($row = $req->fetch(PDO::FETCH_ASSOC)) { $res[] = $this->mapToGps($row); }
+        return $res;
+    }
+
     /**
      * Enregistre une nouvelle position GPS (télémétrie)
      */
@@ -53,13 +96,17 @@ class GpsDAO {
         $req->execute([':debut' => $heureDepart, ':fin' => $heureArrivee]);
         
         while ($row = $req->fetch(PDO::FETCH_ASSOC)) {
-            $g = new Gps(
-                $row['horodatage'], $row['latitude'], $row['longitude'],
-                $row['vitesse_kmh'], $row['cap']
-            );
-            $g->setId($row['id_position']);
-            $res[] = $g;
+            $res[] = $this->mapToGps($row);
         }
         return $res;
+    }
+
+    private function mapToGps(array $row): Gps {
+        $g = new Gps(
+            $row['horodatage'], $row['latitude'], $row['longitude'],
+            $row['vitesse_kmh'], $row['cap']
+        );
+        $g->setId($row['id_position']);
+        return $g;
     }
 }

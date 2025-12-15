@@ -16,6 +16,62 @@ class ChauffeurDAO {
         return $row ? $this->mapToChauffeur($row) : null;
     }
 
+    public function getByNom(string $nom): array {
+    $res = [];
+    $req = $this->bd->prepare("SELECT * FROM chauffeur WHERE nom = :val");
+    $req->execute([':val' => $nom]);
+    while ($row = $req->fetch(PDO::FETCH_ASSOC)) { $res[] = $this->mapToChauffeur($row); }
+    return $res;
+    }
+
+    public function getByPrenom(string $prenom): array {
+        $res = [];
+        $req = $this->bd->prepare("SELECT * FROM chauffeur WHERE prenom = :val");
+        $req->execute([':val' => $prenom]);
+        while ($row = $req->fetch(PDO::FETCH_ASSOC)) { $res[] = $this->mapToChauffeur($row); }
+        return $res;
+    }
+
+    public function getByTelephone(string $telephone): array {
+        $res = [];
+        $req = $this->bd->prepare("SELECT * FROM chauffeur WHERE telephone = :val");
+        $req->execute([':val' => $telephone]);
+        while ($row = $req->fetch(PDO::FETCH_ASSOC)) { $res[] = $this->mapToChauffeur($row); }
+        return $res;
+    }
+
+    // Le numéro de permis est souvent unique, on renvoie un objet
+    public function getByNumeroPermis(string $permis): ?Chauffeur {
+        $req = $this->bd->prepare("SELECT * FROM chauffeur WHERE numero_permis = :val");
+        $req->execute([':val' => $permis]);
+        $row = $req->fetch(PDO::FETCH_ASSOC);
+        return $row ? $this->mapToChauffeur($row) : null;
+    }
+
+    public function getByDateEmbauche(string $date): array {
+        $res = [];
+        $req = $this->bd->prepare("SELECT * FROM chauffeur WHERE date_embauche = :val");
+        $req->execute([':val' => $date]);
+        while ($row = $req->fetch(PDO::FETCH_ASSOC)) { $res[] = $this->mapToChauffeur($row); }
+        return $res;
+    }
+
+    public function getByStatut(string $statut): array {
+        $res = [];
+        $req = $this->bd->prepare("SELECT * FROM chauffeur WHERE statut = :val");
+        $req->execute([':val' => $statut]);
+        while ($row = $req->fetch(PDO::FETCH_ASSOC)) { $res[] = $this->mapToChauffeur($row); }
+        return $res;
+    }
+
+    public function getByCertifications(string $certif): array {
+        // Recherche stricte. Pour une recherche partielle, utiliser LIKE dans une autre méthode.
+        $res = [];
+        $req = $this->bd->prepare("SELECT * FROM chauffeur WHERE certifications = :val");
+        $req->execute([':val' => $certif]);
+        while ($row = $req->fetch(PDO::FETCH_ASSOC)) { $res[] = $this->mapToChauffeur($row); }
+        return $res;
+    }
 
     // --- MÉTHODES MÉTIER UTILES ---
 

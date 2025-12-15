@@ -16,6 +16,64 @@ class DepotDAO {
         return $row ? $this->mapToDepot($row) : null;
     }
 
+    // ... (méthodes existantes...)
+
+public function getByNom(string $nom): array {
+    $res = [];
+    $req = $this->bd->prepare("SELECT * FROM depot WHERE nom = :val");
+    $req->execute([':val' => $nom]);
+    while ($row = $req->fetch(PDO::FETCH_ASSOC)) { $res[] = $this->mapToDepot($row); }
+    return $res;
+}
+
+public function getByNomContact(string $contact): array {
+    $res = [];
+    $req = $this->bd->prepare("SELECT * FROM depot WHERE nom_contact = :val");
+    $req->execute([':val' => $contact]);
+    while ($row = $req->fetch(PDO::FETCH_ASSOC)) { $res[] = $this->mapToDepot($row); }
+    return $res;
+}
+
+public function getByAdresse(string $adresse): array {
+    $res = [];
+    $req = $this->bd->prepare("SELECT * FROM depot WHERE adresse = :val");
+    $req->execute([':val' => $adresse]);
+    while ($row = $req->fetch(PDO::FETCH_ASSOC)) { $res[] = $this->mapToDepot($row); }
+    return $res;
+}
+
+public function getByVille(string $ville): array {
+    $res = [];
+    $req = $this->bd->prepare("SELECT * FROM depot WHERE ville = :val");
+    $req->execute([':val' => $ville]);
+    while ($row = $req->fetch(PDO::FETCH_ASSOC)) { $res[] = $this->mapToDepot($row); }
+    return $res;
+}
+
+public function getByTel(string $tel): array {
+    $res = [];
+    $req = $this->bd->prepare("SELECT * FROM depot WHERE tel = :val");
+    $req->execute([':val' => $tel]);
+    while ($row = $req->fetch(PDO::FETCH_ASSOC)) { $res[] = $this->mapToDepot($row); }
+    return $res;
+}
+
+public function getByLatitude(float $lat): array {
+    $res = [];
+    $req = $this->bd->prepare("SELECT * FROM depot WHERE latitude = :val");
+    $req->execute([':val' => $lat]);
+    while ($row = $req->fetch(PDO::FETCH_ASSOC)) { $res[] = $this->mapToDepot($row); }
+    return $res;
+}
+
+public function getByLongitude(float $lon): array {
+    $res = [];
+    $req = $this->bd->prepare("SELECT * FROM depot WHERE longitude = :val");
+    $req->execute([':val' => $lon]);
+    while ($row = $req->fetch(PDO::FETCH_ASSOC)) { $res[] = $this->mapToDepot($row); }
+    return $res;
+}
+
     // --- MÉTHODES MÉTIER UTILES ---
 
     public function ajouterDepot(Depot $depot): void {

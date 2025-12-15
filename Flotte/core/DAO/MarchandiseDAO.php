@@ -16,6 +16,62 @@ class MarchandiseDAO {
         return $row ? $this->mapToMarchandise($row) : null;
     }
 
+    public function getByNom(string $nom): array {
+        $res = [];
+        $req = $this->bd->prepare("SELECT * FROM marchandise WHERE nom = :val");
+        $req->execute([':val' => $nom]);
+        while ($row = $req->fetch(PDO::FETCH_ASSOC)) { $res[] = $this->mapToMarchandise($row); }
+        return $res;
+    }
+
+    public function getByNumUn(string $num): array {
+        $res = [];
+        $req = $this->bd->prepare("SELECT * FROM marchandise WHERE num_un = :val");
+        $req->execute([':val' => $num]);
+        while ($row = $req->fetch(PDO::FETCH_ASSOC)) { $res[] = $this->mapToMarchandise($row); }
+        return $res;
+    }
+
+    public function getByClasseDanger(string $classe): array {
+        $res = [];
+        $req = $this->bd->prepare("SELECT * FROM marchandise WHERE classe_danger = :val");
+        $req->execute([':val' => $classe]);
+        while ($row = $req->fetch(PDO::FETCH_ASSOC)) { $res[] = $this->mapToMarchandise($row); }
+        return $res;
+    }
+
+    public function getByEtat(string $etat): array {
+        $res = [];
+        $req = $this->bd->prepare("SELECT * FROM marchandise WHERE etat = :val");
+        $req->execute([':val' => $etat]);
+        while ($row = $req->fetch(PDO::FETCH_ASSOC)) { $res[] = $this->mapToMarchandise($row); }
+        return $res;
+    }
+
+    public function getByConsignesManipulation(string $consignes): array {
+        $res = [];
+        $req = $this->bd->prepare("SELECT * FROM marchandise WHERE consignes_manipulation = :val");
+        $req->execute([':val' => $consignes]);
+        while ($row = $req->fetch(PDO::FETCH_ASSOC)) { $res[] = $this->mapToMarchandise($row); }
+        return $res;
+    }
+
+    public function getByRestrictionsTransport(string $restrictions): array {
+        $res = [];
+        $req = $this->bd->prepare("SELECT * FROM marchandise WHERE restrictions_transport = :val");
+        $req->execute([':val' => $restrictions]);
+        while ($row = $req->fetch(PDO::FETCH_ASSOC)) { $res[] = $this->mapToMarchandise($row); }
+        return $res;
+    }
+
+    public function getByDateCreation(string $date): array {
+        $res = [];
+        $req = $this->bd->prepare("SELECT * FROM marchandise WHERE DATE(date_creation) = DATE(:val)");
+        $req->execute([':val' => $date]);
+        while ($row = $req->fetch(PDO::FETCH_ASSOC)) { $res[] = $this->mapToMarchandise($row); }
+        return $res;
+    }
+
     // --- MÉTHODES MÉTIER UTILES ---
 
     /**

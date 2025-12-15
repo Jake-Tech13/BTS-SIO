@@ -18,6 +18,88 @@ class LivraisonDAO {
         return $data ? $this->mapToLivraison($data) : null;
     }
 
+    // ... (méthodes existantes...)
+
+    // La référence est UNIQUE
+    public function getByReference(string $ref): ?Livraison {
+        $req = $this->bd->prepare("SELECT * FROM livraison WHERE reference = :val");
+        $req->execute([':val' => $ref]);
+        $row = $req->fetch(PDO::FETCH_ASSOC);
+        return $row ? $this->mapToLivraison($row) : null;
+    }
+
+    public function getByIdClient(int $idClient): array {
+        $res = [];
+        $req = $this->bd->prepare("SELECT * FROM livraison WHERE id_client = :val");
+        $req->execute([':val' => $idClient]);
+        while ($row = $req->fetch(PDO::FETCH_ASSOC)) { $res[] = $this->mapToLivraison($row); }
+        return $res;
+    }
+
+    public function getByIdMarchandise(int $idMarchandise): array {
+        $res = [];
+        $req = $this->bd->prepare("SELECT * FROM livraison WHERE id_marchandise = :val");
+        $req->execute([':val' => $idMarchandise]);
+        while ($row = $req->fetch(PDO::FETCH_ASSOC)) { $res[] = $this->mapToLivraison($row); }
+        return $res;
+    }
+
+    public function getByIdDestinationDepot(int $idDepot): array {
+        $res = [];
+        $req = $this->bd->prepare("SELECT * FROM livraison WHERE id_destination_depot = :val");
+        $req->execute([':val' => $idDepot]);
+        while ($row = $req->fetch(PDO::FETCH_ASSOC)) { $res[] = $this->mapToLivraison($row); }
+        return $res;
+    }
+
+    public function getByPoidsKg(float $poids): array {
+        $res = [];
+        $req = $this->bd->prepare("SELECT * FROM livraison WHERE poids_kg = :val");
+        $req->execute([':val' => $poids]);
+        while ($row = $req->fetch(PDO::FETCH_ASSOC)) { $res[] = $this->mapToLivraison($row); }
+        return $res;
+    }
+
+    public function getByVolumeM3(float $volume): array {
+        $res = [];
+        $req = $this->bd->prepare("SELECT * FROM livraison WHERE volume_m3 = :val");
+        $req->execute([':val' => $volume]);
+        while ($row = $req->fetch(PDO::FETCH_ASSOC)) { $res[] = $this->mapToLivraison($row); }
+        return $res;
+    }
+
+    public function getByStatut(string $statut): array {
+        $res = [];
+        $req = $this->bd->prepare("SELECT * FROM livraison WHERE statut = :val");
+        $req->execute([':val' => $statut]);
+        while ($row = $req->fetch(PDO::FETCH_ASSOC)) { $res[] = $this->mapToLivraison($row); }
+        return $res;
+    }
+
+    public function getByDateCreation(string $date): array {
+        $res = [];
+        $req = $this->bd->prepare("SELECT * FROM livraison WHERE DATE(date_creation) = DATE(:val)");
+        $req->execute([':val' => $date]);
+        while ($row = $req->fetch(PDO::FETCH_ASSOC)) { $res[] = $this->mapToLivraison($row); }
+        return $res;
+    }
+
+    public function getByDatePrelevementPrevue(string $date): array {
+        $res = [];
+        $req = $this->bd->prepare("SELECT * FROM livraison WHERE DATE(date_prelevement_prevue) = DATE(:val)");
+        $req->execute([':val' => $date]);
+        while ($row = $req->fetch(PDO::FETCH_ASSOC)) { $res[] = $this->mapToLivraison($row); }
+        return $res;
+    }
+
+    public function getByDateLivraisonPrevue(string $date): array {
+        $res = [];
+        $req = $this->bd->prepare("SELECT * FROM livraison WHERE DATE(date_livraison_prevue) = DATE(:val)");
+        $req->execute([':val' => $date]);
+        while ($row = $req->fetch(PDO::FETCH_ASSOC)) { $res[] = $this->mapToLivraison($row); }
+        return $res;
+    }
+
     // --- MÉTHODES MÉTIER UTILES ---
 
     /**

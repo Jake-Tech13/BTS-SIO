@@ -9,9 +9,66 @@ class FactureDAO {
         $this->bd = Connexion::connexionPDO();
     }
 
+    // méthodes d'instantiation de l'objet métier
     public function getById(int $id): ?Facture {
         $req = $this->bd->prepare("SELECT * FROM facture WHERE id_facture = :id");
         $req->execute([':id' => $id]);
+        $row = $req->fetch(PDO::FETCH_ASSOC);
+        return $row ? $this->mapToFacture($row) : null;
+    }
+
+    public function getByIdLivraison(int $idLivraison): array {
+        $res = [];
+        $req = $this->bd->prepare("SELECT * FROM facture WHERE id_livraison = :val");
+        $req->execute([':val' => $idLivraison]);
+        while ($row = $req->fetch(PDO::FETCH_ASSOC)) { $res[] = $this->mapToFacture($row); }
+        return $res;
+    }
+
+    public function getByMontantHt(float $montant): array {
+        $res = [];
+        $req = $this->bd->prepare("SELECT * FROM facture WHERE montant_ht = :val");
+        $req->execute([':val' => $montant]);
+        while ($row = $req->fetch(PDO::FETCH_ASSOC)) { $res[] = $this->mapToFacture($row); }
+        return $res;
+    }
+
+    public function getByTva(float $tva): array {
+        $res = [];
+        $req = $this->bd->prepare("SELECT * FROM facture WHERE tva = :val");
+        $req->execute([':val' => $tva]);
+        while ($row = $req->fetch(PDO::FETCH_ASSOC)) { $res[] = $this->mapToFacture($row); }
+        return $res;
+    }
+
+    public function getByStatut(string $statut): array {
+        $res = [];
+        $req = $this->bd->prepare("SELECT * FROM facture WHERE statut = :val");
+        $req->execute([':val' => $statut]);
+        while ($row = $req->fetch(PDO::FETCH_ASSOC)) { $res[] = $this->mapToFacture($row); }
+        return $res;
+    }
+
+    public function getByDateEmission(string $date): array {
+        $res = [];
+        $req = $this->bd->prepare("SELECT * FROM facture WHERE DATE(date_emission) = DATE(:val)");
+        $req->execute([':val' => $date]);
+        while ($row = $req->fetch(PDO::FETCH_ASSOC)) { $res[] = $this->mapToFacture($row); }
+        return $res;
+    }
+
+    public function getByDatePaiement(string $date): array {
+        $res = [];
+        $req = $this->bd->prepare("SELECT * FROM facture WHERE DATE(date_paiement) = DATE(:val)");
+        $req->execute([':val' => $date]);
+        while ($row = $req->fetch(PDO::FETCH_ASSOC)) { $res[] = $this->mapToFacture($row); }
+        return $res;
+    }
+
+    // Référence externe est souvent unique ou quasi-unique
+    public function getByReferenceExterne(string $ref): ?Facture {
+        $req = $this->bd->prepare("SELECT * FROM facture WHERE reference_externe = :val");
+        $req->execute([':val' => $ref]);
         $row = $req->fetch(PDO::FETCH_ASSOC);
         return $row ? $this->mapToFacture($row) : null;
     }
