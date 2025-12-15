@@ -16,6 +16,7 @@ class ChauffeurDAO {
         return $row ? $this->mapToChauffeur($row) : null;
     }
 
+
     // --- MÉTHODES MÉTIER UTILES ---
 
     /**
