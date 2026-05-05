@@ -4,43 +4,61 @@
         <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
         <title><?php echo $titre ?></title>
         <style type="text/css">
-            @import url("css/base.css");
-            @import url("css/form.css");
-            @import url("css/cgu.css");
-            @import url("css/corps.css");
+            @import url("../css/base.css");
+            @import url("../css/form.css");
+            @import url("../css/cgu.css");
+            @import url("../css/corps.css");
         </style>
         <link href="https://fonts.googleapis.com/css?family=Lobster" rel="stylesheet">
+        <script>
+            function toggleMenu() {
+                const menu = document.getElementById('side-menu');
+                menu.classList.toggle('open');
+            }
+
+            function selectCategory(name) {
+                document.getElementById('category-name').textContent = name;
+                toggleMenu(); // Fermer le menu après sélection
+            }
+
+            function toggleUserDropdown() {
+                const dropdown = document.getElementById('user-dropdown');
+                const arrow = document.getElementById('arrow');
+                dropdown.classList.toggle('open');
+                arrow.textContent = dropdown.classList.contains('open') ? 'v' : '^';
+            }
+        </script>
     </head>
     <body>
-    <nav>
+        <!-- Bannière fixe -->
+        <div id="banner">
+            <div id="hamburger" onclick="toggleMenu()">
+                <div></div>
+                <div></div>
+                <div></div>
+            </div>
+            <div id="category-name"><?php echo isset($selectedCategory) ? $selectedCategory : 'Tableau de Bord'; ?></div>
+            <div id="user-menu" onclick="toggleUserDropdown()">
+                <img src="../images/profil.png" alt="user" />
+                <span id="arrow">^</span>
+                <ul id="user-dropdown">
+                    <li><a href="#">Profil</a></li>
+                    <li><a href="#">Paramètres</a></li>
+                    <li><a href="#">Déconnexion</a></li>
+                </ul>
+            </div>
+        </div>
 
-        <ul id="menuGeneral">
-            <li><a href="./?action=accueil">Accueil</a></li> 
-            <li><a href="./?action=liste">Liste</a></li> 
-            <li></li>
-            <li id="logo"><a href="./?action=accueil"><img src="images/logoBarre.png" alt="logo" /></a></li>
-            <li></li> 
-            <li><a href="./?action=cgu">CGU</a></li>
+        <!-- Menu latéral pour hamburger -->
+        <div id="side-menu">
+            <ul>
+                <li onclick="selectCategory('Tableau de Bord')">Tableau de Bord</li>
+                <li onclick="selectCategory('Véhicules')">Véhicules</li>
+                <li onclick="selectCategory('Trajets')">Trajets</li>
+                <li onclick="selectCategory('Dépôts')">Dépôts</li>
+                <li onclick="selectCategory('Maintenance')">Maintenance</li>
+            </ul>
+        </div>
 
-            <li><a href="./?action=connexion"><img src="images/profil.png" alt="loupe" />Connexion</a></li>
-        </ul>
-    </nav>
-    <div id="bouton">
-        <div></div>
-        <div></div>
-        <div></div>
-    </div>
-    <ul id="menuContextuel">
-        <li><img src="images/logoBarre.png" alt="logo" /></li>
-        <?php if (isset($menuBurger)) { ?>
-            <?php for ($i = 0; $i < count($menuBurger); $i++) { ?>
-                <li>
-                    <a href="<?php echo $menuBurger[$i]['url']; ?>">
-                        <?php echo $menuBurger[$i]['label']; ?>
-                    </a>
-                </li>
-            <?php } ?>
-        <?php } ?>
-    </ul>
-
-    <div id="corps">
+        <div id="corps">
+        

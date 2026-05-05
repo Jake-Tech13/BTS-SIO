@@ -57,6 +57,7 @@ while($row = $req->fetch(PDO::FETCH_ASSOC)) {
 }
 
 $titre = "Tableau de Bord - Suivi Flotte";
+$selectedCategory = "Tableau de Bord";
 include "$racine/vue/entete.html.php";
 include "$racine/vue/vueTableauBord.php";
 include "$racine/vue/pied.html.php";

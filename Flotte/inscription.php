@@ -5,34 +5,34 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     $nom = trim($_POST["nom"] ?? "");
     $prenom = trim($_POST["prenom"] ?? "");
     $email = trim($_POST["email"] ?? "");
-    $motdepasse = $_POST["motdepasse"] ?? "";
+    $mdp = $_POST["mdp"] ?? "";
 
-    if (empty($nom) || empty($prenom) || empty($email) || empty($motdepasse)) {
+    if (empty($nom) || empty($prenom) || empty($email) || empty($mdp)) {
         die("Veuillez remplir tous les champs.");
     }
 
     try {
-        $pdo = ConnexionBD::connexionPDO();
+        $pdo = Connexion::connexionPDO();
 
         // Vérifier si l'email existe déjà
-        $check = $pdo->prepare("SELECT COUNT(*) FROM client WHERE email = :email");
+        $check = $pdo->prepare("SELECT COUNT(*) FROM user WHERE email = :email");
         $check->execute([":email" => $email]);
         if ($check->fetchColumn() > 0) {
             die("Un compte existe déjà avec cet email. Veuillez sélectionner un e-mail différent.");
         }
 
         // Hachage du mot de passe
-        $hash = password_hash($motdepasse, PASSWORD_DEFAULT);
+        $hash = password_hash($mdp, PASSWORD_DEFAULT);
 
         // Insertion
-        $sql = "INSERT INTO client (nom, prenom, email, motdepasse, date_creation) 
-                VALUES (:nom, :prenom, :email, :motdepasse, NOW())";
+        $sql = "INSERT INTO user (nom, prenom, email, mdp, date_creation) 
+                VALUES (:nom, :prenom, :email, :mdp, NOW())";
         $stmt = $pdo->prepare($sql);
         $stmt->execute([
             ":nom" => $nom,
             ":prenom" => $prenom,
             ":email" => $email,
-            ":motdepasse" => $hash
+            ":mdp" => $hash
         ]);
 
         echo "Inscription réussie ! Vous pouvez maintenant vous connecter avec votre nouveau compte.";

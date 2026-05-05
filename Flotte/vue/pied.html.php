@@ -1,5 +1,3 @@
-
-</div>
-
-</body>
+        </div> <!-- Fin de #corps -->
+    </body>
 </html>
