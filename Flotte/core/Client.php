@@ -91,7 +91,7 @@ class Client {
     }
 
     // Constructeur    
-    public function __construct(?int $id = null, string $nom, string $prenom, string $raisonSociale, string $email, string $telephone, string $mdp, string $codePostal, string $ville, string $adresse, string $numTVA, ?string $dateCreation = null) {
+    public function __construct(?int $id, string $nom, string $prenom, string $raisonSociale, string $email, string $telephone, string $mdp, string $codePostal, string $ville, string $adresse, string $numTVA, ?string $dateCreation = null) {
         $this->id = $id;
         $this->nom = $nom;
         $this->prenom = $prenom;

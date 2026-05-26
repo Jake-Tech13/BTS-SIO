@@ -1,5 +1,5 @@
 <?php
-include_once dirname(__DIR__) . '/modele/bd.inc.php';
+include_once dirname(__DIR__, 2) . '/modele/bd.inc.php';
 include_once __DIR__ . '/../Vehicule.php';
 
 class VehiculeDAO {
@@ -129,9 +129,14 @@ class VehiculeDAO {
 
     private function mapToVehicule(array $row): Vehicule {
         $v = new Vehicule(
-            $row['immatriculation'], $row['code_vin'], $row['modele'],
-            $row['annee'], $row['capacite_kg'], $row['capacite_m3'],
-            $row['statut'], $row['id_depot_actuel']
+            $row['immatriculation'], 
+            $row['code_vin'] ?? '', 
+            $row['modele'] ?? '',
+            $row['annee'] ?? 0, 
+            $row['capacite_kg'], 
+            $row['capacite_m3'] ?? 0.0,
+            $row['statut'], 
+            $row['id_depot_actuel']
         );
         $v->setId($row['id_vehicule']);
         return $v;

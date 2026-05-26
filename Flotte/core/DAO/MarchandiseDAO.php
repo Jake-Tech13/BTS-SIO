@@ -1,5 +1,5 @@
 <?php
-include_once dirname(__DIR__) . '/modele/bd.inc.php';
+include_once dirname(__DIR__, 2) . '/modele/bd.inc.php';
 include_once __DIR__ . '/../Marchandise.php';
 
 class MarchandiseDAO {
