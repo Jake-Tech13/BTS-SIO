@@ -8,6 +8,7 @@
             @import url("../css/form.css");
             @import url("../css/cgu.css");
             @import url("../css/corps.css");
+            @import url("../css/tableaubord.css");
         </style>
         <link href="https://fonts.googleapis.com/css?family=Lobster" rel="stylesheet">
         <script>

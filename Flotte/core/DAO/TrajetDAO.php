@@ -1,6 +1,6 @@
 <?php
-include_once '../../modele/bd.inc.php';
-include_once '../core/Trajet.php';
+include_once dirname(__DIR__) . '/modele/bd.inc.php';
+include_once __DIR__ . '/../Trajet.php';
 
 class TrajetDAO {
     private PDO $bd;

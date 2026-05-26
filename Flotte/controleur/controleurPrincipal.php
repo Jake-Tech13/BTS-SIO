@@ -2,16 +2,16 @@
 function controleurPrincipal($action){
     $lesActions = [];
     // Par défaut, on va sur le tableau de bord
-    $lesActions["defaut"] = "controleurTableauBord.php";
+    $lesActions["defaut"] = "controleur/controleurTableauBord.php";
     
     // Actions principales
-    $lesActions["accueil"] = "controleurTableauBord.php";
-    $lesActions["livraisons"] = "listeLivraisons.php"; // À créer plus tard
-    $lesActions["flotte"] = "listeFlotte.php";         // À créer plus tard
+    $lesActions["accueil"] = "controleur/controleurTableauBord.php";
+    $lesActions["livraisons"] = "controleur/listeLivraisons.php"; // À créer plus tard
+    $lesActions["flotte"] = "controleur/listeFlotte.php";         // À créer plus tard
     
     // Authentification
-    $lesActions["connexion"] = "connexion.php"; // Attention: connexion est à la racine, à adapter si besoin
-    $lesActions["deconnexion"] = "deconnexion.php";
+    $lesActions["connexion"] = "connexion.php"; // À la racine
+    $lesActions["deconnexion"] = "deconnexion.php"; // À la racine
 
     if (array_key_exists ( $action , $lesActions )){
         return $lesActions[$action];

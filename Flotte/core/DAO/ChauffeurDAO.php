@@ -1,6 +1,6 @@
 <?php
-include_once '../../modele/bd.inc.php';
-include_once '../core/Chauffeur.php';
+include_once dirname(__DIR__) . '/modele/bd.inc.php';
+include_once __DIR__ . '/../Chauffeur.php';
 
 class ChauffeurDAO {
     private PDO $bd;

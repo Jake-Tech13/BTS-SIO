@@ -1,6 +1,6 @@
 <?php
-include_once '../../modele/bd.inc.php';
-include_once '../core/Facture.php';
+include_once dirname(__DIR__) . '/modele/bd.inc.php';
+include_once __DIR__ . '/../Facture.php';
 
 class FactureDAO {
     private PDO $bd;
