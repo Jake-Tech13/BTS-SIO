@@ -106,7 +106,7 @@ class GpsDAO {
             $row['horodatage'], $row['latitude'], $row['longitude'],
             $row['vitesse_kmh'], $row['cap']
         );
-        $g->setId($row['id_position']);
+        $g->setId($row['id']);
         return $g;
     }
 }

@@ -96,7 +96,7 @@ foreach ($vehiculesEnService as $vehicule) {
 
     if ($trajetData) {
         // Récupérer la position GPS
-        $sqlGps = "SELECT * FROM gps WHERE id_position = :idG";
+        $sqlGps = "SELECT * FROM gps WHERE id = :idG";
         $stmtGps = $bd->prepare($sqlGps);
         $stmtGps->execute([':idG' => $trajetData['id_gps']]);
         $gpsData = $stmtGps->fetch(PDO::FETCH_ASSOC);
