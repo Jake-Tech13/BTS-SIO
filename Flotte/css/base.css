@@ -101,3 +101,115 @@ body {
     margin: 0 auto;
     /* Plus aucun position:absolute ni largeur bloquée à 900px ! */
 }
+
+/* =========================================================
+   LISTES ET TABLES FORMATÉES
+   ========================================================= */
+.list-container {
+    padding: 30px;
+    max-width: 1400px;
+    margin: 20px auto;
+    background-color: var(--erp-white);
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.list-container h2 {
+    color: var(--erp-dark);
+    font-size: 1.8rem;
+    margin-bottom: 25px;
+    border-bottom: 3px solid var(--erp-primary);
+    padding-bottom: 10px;
+}
+
+.data-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.95rem;
+}
+
+.data-table thead {
+    background-color: var(--erp-dark);
+    color: var(--erp-white);
+}
+
+.data-table th {
+    padding: 15px;
+    text-align: left;
+    font-weight: 600;
+    border-bottom: 2px solid var(--erp-primary);
+}
+
+.data-table tbody tr {
+    border-bottom: 1px solid #e9ecef;
+    transition: background-color 0.2s ease;
+}
+
+.data-table tbody tr:hover {
+    background-color: #f8f9fa;
+}
+
+.data-table td {
+    padding: 15px;
+    color: var(--erp-dark);
+}
+
+.data-table strong {
+    color: var(--erp-primary);
+    font-weight: 600;
+}
+
+/* Badge de statut */
+.badge {
+    display: inline-block;
+    padding: 6px 12px;
+    border-radius: 20px;
+    font-size: 0.85rem;
+    font-weight: 500;
+    text-align: center;
+    min-width: 80px;
+}
+
+.badge-disponible,
+.badge-active {
+    background-color: #d4edda;
+    color: #155724;
+    border: 1px solid #c3e6cb;
+}
+
+.badge-en_service,
+.badge-en_cours {
+    background-color: #cfe2ff;
+    color: #084298;
+    border: 1px solid #b6d4fe;
+}
+
+.badge-en_entretien,
+.badge-maintenance {
+    background-color: #fff3cd;
+    color: #664d03;
+    border: 1px solid #ffecb5;
+}
+
+.badge-hors_service,
+.badge-failed,
+.badge-cancelled {
+    background-color: #f8d7da;
+    color: #842029;
+    border: 1px solid #f5c2c7;
+}
+
+.badge-termine,
+.badge-completed {
+    background-color: #d1ecf1;
+    color: #0c5460;
+    border: 1px solid #bee5eb;
+}
+
+/* Message vide */
+.empty-message {
+    text-align: center;
+    padding: 40px 20px;
+    color: var(--erp-text-light);
+    font-size: 1.1rem;
+}

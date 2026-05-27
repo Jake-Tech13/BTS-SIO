@@ -9,8 +9,16 @@ class TrajetDAO {
         $this->bd = Connexion::connexionPDO();
     }
 
-    // ... (méthodes existantes...)
+    public function getAll(): array {
+        $res = [];
+        $req = $this->bd->query("SELECT * FROM trajet");
+        while ($row = $req->fetch(PDO::FETCH_ASSOC)) {
+            $res[] = $this->mapToTrajet($row);
+        }
+        return $res;
+    }
 
+    // L'immatriculation est UNIQUE
     public function getByIdVehicule(int $idVehicule): array {
         $res = [];
         $req = $this->bd->prepare("SELECT * FROM trajet WHERE id_vehicule = :val");

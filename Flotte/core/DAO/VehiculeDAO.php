@@ -16,6 +16,15 @@ class VehiculeDAO {
         return $row ? $this->mapToVehicule($row) : null;
     }
 
+    public function getAll(): array {
+        $res = [];
+        $req = $this->bd->query("SELECT * FROM vehicule");
+        while ($row = $req->fetch(PDO::FETCH_ASSOC)) {
+            $res[] = $this->mapToVehicule($row);
+        }
+        return $res;
+    }
+
     // L'immatriculation est UNIQUE
     public function getByImmatriculation(string $immat): ?Vehicule {
         $req = $this->bd->prepare("SELECT * FROM vehicule WHERE immatriculation = :val");

@@ -9,6 +9,15 @@ class MaintenanceDAO {
         $this->bd = Connexion::connexionPDO();
     }
 
+    public function getAll(): array {
+        $res = [];
+        $req = $this->bd->query("SELECT * FROM maintenance");
+        while ($row = $req->fetch(PDO::FETCH_ASSOC)) {
+            $res[] = $this->mapToMaintenance($row);
+        }
+        return $res;
+    }
+
     // ... (méthodes existantes...)
 
     public function getByIdVehicule(int $idVehicule): array {

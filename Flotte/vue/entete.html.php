@@ -19,12 +19,12 @@
         </div>
         
         <nav class="nav-links">
-            <a href="./?action=tableaubord" class="<?= (isset($selectedCategory) && $selectedCategory === 'Tableau de Bord') ? 'active' : '' ?>">📊 Tableau de Bord</a>
-            <a href="./?action=carte" class="<?= (isset($selectedCategory) && $selectedCategory === 'Carte & Suivi') ? 'active' : '' ?>">🗺️ Carte & Suivi GPS</a>
-            <a href="./?action=vehicules">🚚 Véhicules</a>
-            <a href="./?action=trajets">🛣️ Trajets</a>
-            <a href="./?action=depots">🏢 Dépôts</a>
-            <a href="./?action=maintenance">🔧 Maintenance</a>
+            <a href="./?action=tableaubord" class="<?= (($action ?? 'defaut') === 'tableaubord' || ($action ?? 'defaut') === 'defaut' || ($action ?? 'defaut') === 'accueil') ? 'active' : '' ?>">📊 Tableau de Bord</a>
+            <a href="./?action=carte" class="<?= (($action ?? 'defaut') === 'carte' || ($action ?? 'defaut') === 'flotte') ? 'active' : '' ?>">🗺️ Carte & Suivi GPS</a>
+            <a href="./?action=vehicules" class="<?= (($action ?? 'defaut') === 'vehicules') ? 'active' : '' ?>">🚚 Véhicules</a>
+            <a href="./?action=trajets" class="<?= (($action ?? 'defaut') === 'trajets') ? 'active' : '' ?>">🛣️ Trajets</a>
+            <a href="./?action=depots" class="<?= (($action ?? 'defaut') === 'depots') ? 'active' : '' ?>">🏢 Dépôts</a>
+            <a href="./?action=maintenances" class="<?= (($action ?? 'defaut') === 'maintenances') ? 'active' : '' ?>">🔧 Maintenances</a>
         </nav>
         
         <div class="user-profile">
