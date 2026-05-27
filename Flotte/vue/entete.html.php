@@ -33,12 +33,11 @@
     <body>
         <!-- Bannière fixe -->
         <div id="banner">
-            <div id="hamburger" onclick="toggleMenu()">
-                <div></div>
-                <div></div>
-                <div></div>
-            </div>
-            <div id="category-name"><?php echo isset($selectedCategory) ? $selectedCategory : 'Tableau de Bord'; ?></div>
+            <div id="logo-text">Flotte</div>
+            <nav id="nav-buttons">
+                <a href="index.php?action=accueil" class="nav-btn <?php echo ($_GET['action'] ?? 'defaut') === 'accueil' ? 'active' : ''; ?>">Tableau de bord</a>
+                <a href="index.php?action=flotte" class="nav-btn <?php echo ($_GET['action'] ?? 'defaut') === 'flotte' ? 'active' : ''; ?>">Carte</a>
+            </nav>
             <div id="user-menu" onclick="toggleUserDropdown()">
                 <img src="../images/profil.png" alt="user" />
                 <span id="arrow">^</span>
@@ -52,12 +51,14 @@
 
         <!-- Menu latéral pour hamburger -->
         <div id="side-menu">
+            <div class="side-menu-header">Menu Principal</div>
             <ul>
-                <li onclick="selectCategory('Tableau de Bord')">Tableau de Bord</li>
-                <li onclick="selectCategory('Véhicules')">Véhicules</li>
-                <li onclick="selectCategory('Trajets')">Trajets</li>
-                <li onclick="selectCategory('Dépôts')">Dépôts</li>
-                <li onclick="selectCategory('Maintenance')">Maintenance</li>
+                <li onclick="window.location.href='./?action=tableaubord'">📊 Tableau de Bord</li>
+                <li onclick="window.location.href='./?action=carte'">🗺️ Carte & Suivi GPS</li>
+                <li onclick="window.location.href='./?action=vehicules'">🚚 Véhicules</li>
+                <li onclick="window.location.href='./?action=trajets'">🛣️ Trajets</li>
+                <li onclick="window.location.href='./?action=depots'">🏢 Dépôts</li>
+                <li onclick="window.location.href='./?action=maintenance'">🔧 Maintenance</li>
             </ul>
         </div>
 

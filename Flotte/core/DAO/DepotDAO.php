@@ -16,7 +16,14 @@ class DepotDAO {
         return $row ? $this->mapToDepot($row) : null;
     }
 
-    // ... (méthodes existantes...)
+public function getAll(): array {
+        $res = [];
+        $req = $this->bd->query("SELECT * FROM depot");
+        while ($row = $req->fetch(PDO::FETCH_ASSOC)) {
+            $res[] = $this->mapToDepot($row);
+        }
+        return $res;
+    }
 
 public function getByNom(string $nom): array {
     $res = [];

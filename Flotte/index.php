@@ -44,5 +44,3 @@ include_once $fichier;
 
 // Inclure le pied de page
 include_once 'vue/pied.html.php';
-?>
-

@@ -92,11 +92,11 @@ $statsMaintenances = [
 ];
 
 // ========== LISTE DES DÉPÔTS ==========
-$sql = "SELECT * FROM depot";
-$req = $bd->query($sql);
+$depotsObjets = $depotDAO->getAll();
 $listeDepots = [];
-while ($row = $req->fetch(PDO::FETCH_ASSOC)) {
-    $listeDepots[] = $row;
+foreach ($depotsObjets as $d) {
+    // On utilise la méthode native de l'objet pour le transformer en tableau
+    $listeDepots[] = $d->toArray(); 
 }
 
 // Variables pour l'entête

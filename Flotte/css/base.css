@@ -210,10 +210,47 @@ nav {
     color: #fff;
     display: flex;
     align-items: center;
-    justify-content: space-between;
+    justify-content: flex-start;
     padding: 0 20px;
     box-shadow: 0px 0px 6px #999;
     z-index: 1000;
+    gap: 20px;
+}
+
+#logo-text {
+    font-size: 24px;
+    font-weight: bold;
+    color: #fff;
+    margin-right: 20px;
+}
+
+#nav-buttons {
+    display: flex;
+    gap: 10px;
+    flex-grow: 1;
+}
+
+#nav-buttons .nav-btn {
+    padding: 8px 16px !important;
+    background-color: rgba(255,255,255,0.2) !important;
+    color: #fff !important;
+    text-decoration: none !important;
+    border-radius: 4px !important;
+    transition: all 0.3s ease !important;
+    font-size: 14px !important;
+    font-weight: 500 !important;
+    border: 1px solid rgba(255,255,255,0.3) !important;
+    display: inline-block !important;
+}
+
+#nav-buttons .nav-btn:hover {
+    background-color: rgba(255,255,255,0.3) !important;
+    border-color: rgba(255,255,255,0.5) !important;
+}
+
+#nav-buttons .nav-btn.active {
+    background-color: rgba(238,144,9,0.8) !important;
+    border-color: rgba(238,144,9,1) !important;
 }
 
 #hamburger {
@@ -244,6 +281,7 @@ nav {
     cursor: pointer;
     display: flex;
     align-items: center;
+    margin-left: auto;
 }
 
 #user-menu img {
@@ -294,37 +332,66 @@ nav {
     background-color: #f0f0f0;
 }
 
+/* Sidebar Moderne type ERP */
 #side-menu {
     position: fixed;
     top: 60px;
-    left: -250px;
-    width: 250px;
-    height: calc(100% - 60px);
-    background-color: #333;
+    left: -260px;
+    width: 260px;
+    height: calc(100vh - 60px);
+    background-color: #1d273b; /* Bleu très sombre pro */
     color: #fff;
-    transition: 0.3s;
+    transition: left 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     z-index: 999;
-    padding-top: 20px;
+    box-shadow: 4px 0 10px rgba(0,0,0,0.15);
+    overflow-y: auto;
 }
 
 #side-menu.open {
     left: 0;
 }
 
+.side-menu-header {
+    padding: 20px 25px;
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: #6e7582;
+    border-bottom: 1px solid rgba(255,255,255,0.05);
+    font-weight: 600;
+}
+
 #side-menu ul {
     list-style: none;
-    padding: 0;
+    padding: 10px 0;
     margin: 0;
 }
 
 #side-menu li {
-    padding: 15px 20px;
+    padding: 15px 25px;
     cursor: pointer;
-    border-bottom: 1px solid #555;
+    border-left: 3px solid transparent;
+    transition: all 0.2s ease;
+    font-size: 1rem;
+    display: flex;
+    align-items: center;
+    gap: 12px; /* Espace entre l'icône et le texte */
 }
 
 #side-menu li:hover {
-    background-color: #555;
+    background-color: rgba(255, 255, 255, 0.05);
+    border-left-color: #206bc4; /* Ligne de surbrillance bleue */
+    color: #ffffff;
+}
+
+/* Ajustement subtil du corps quand le menu est ouvert sur grand écran */
+@media (min-width: 992px) {
+    #corps {
+        transition: margin-left 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    body:has(#side-menu.open) #corps {
+        margin-left: 260px;
+    }
 }
 
 #corps {

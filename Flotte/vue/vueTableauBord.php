@@ -101,9 +101,9 @@
                         <tbody>
                             <?php foreach ($listeDepots as $depot): ?>
                                 <tr>
-                                    <td><strong><?= htmlspecialchars($depot['nom']) ?></strong></td>
-                                    <td><?= htmlspecialchars($depot['ville']) ?> (<?= htmlspecialchars($depot['code_postal']) ?>)</td>
-                                    <td class="text-muted"><?= htmlspecialchars($depot['tel'] ?? 'N/C') ?></td>
+                                    <td><strong><?= htmlspecialchars($depot['nom'] ?? 'N/C') ?></strong></td>
+                                    <td><?= htmlspecialchars($depot['ville'] ?? 'N/C') ?></td>
+                                    <td class="text-muted"><?= htmlspecialchars($depot['telephone'] ?? 'N/C') ?></td>
                                 </tr>
                             <?php endforeach; ?>
                         </tbody>
