@@ -1,245 +1,159 @@
-<!-- Tableau de Bord - Suivi Flotte -->
-<div class="tableau-bord-container">
-    <header class="tableau-bord-header">
-        <h1>📊 Tableau de Bord - Suivi Flotte</h1>
-        <p class="date-heure">Mise à jour : <?php echo date('d/m/Y H:i:s'); ?></p>
-    </header>
+<link rel="stylesheet" href="./css/tableaubord.css">
 
-    <!-- ========== STATISTIQUES GLOBALES ========== -->
-    <section class="stats-grid">
-        <div class="stat-card stat-vehicules">
-            <div class="stat-icon">🚗</div>
-            <div class="stat-content">
-                <h3>Flotte Véhicules</h3>
-                <div class="stat-value"><?php echo $statsVehicules['total']; ?></div>
-                <div class="stat-details">
-                    <span class="disponible">Dispo: <?php echo $statsVehicules['disponible']; ?></span>
-                    <span class="en_service">Service: <?php echo $statsVehicules['en_service']; ?></span>
-                    <span class="en_entretien">Entretien: <?php echo $statsVehicules['en_entretien']; ?></span>
-                    <span class="hors_service">Hors service: <?php echo $statsVehicules['hors_service']; ?></span>
-                </div>
+<div class="erp-dashboard">
+    <div class="erp-header">
+        <div>
+            <h1 class="erp-title">Synthèse globale</h1>
+            <span class="erp-subtitle">Vue d'ensemble de l'activité logistique</span>
+        </div>
+        <div class="erp-timestamp">
+            Dernière actualisation : <strong><?= date('d/m/Y H:i') ?></strong>
+        </div>
+    </div>
+
+    <div class="erp-kpi-grid">
+        <div class="erp-card kpi-card border-top-primary">
+            <div class="kpi-title">Parc Véhicules</div>
+            <div class="kpi-value"><?= $statsVehicules['total'] ?></div>
+            <div class="kpi-details">
+                <span class="badge badge-success"><?= $statsVehicules['disponible'] ?> Dispo</span>
+                <span class="badge badge-warning"><?= $statsVehicules['en_service'] ?> En service</span>
+                <span class="badge badge-danger"><?= $statsVehicules['en_entretien'] ?> Entretien</span>
             </div>
         </div>
 
-        <div class="stat-card stat-livraisons">
-            <div class="stat-icon">📦</div>
-            <div class="stat-content">
-                <h3>Livraisons</h3>
-                <div class="stat-value"><?php echo $statsLivraisons['total']; ?></div>
-                <div class="stat-details">
-                    <span class="prevue">Prévues: <?php echo $statsLivraisons['prevue']; ?></span>
-                    <span class="en_cours">En cours: <?php echo $statsLivraisons['en_cours']; ?></span>
-                    <span class="livree">Livrées: <?php echo $statsLivraisons['livree']; ?></span>
-                </div>
+        <div class="erp-card kpi-card border-top-info">
+            <div class="kpi-title">Livraisons Actives</div>
+            <div class="kpi-value"><?= $statsLivraisons['en_cours'] + $statsLivraisons['prevue'] ?></div>
+            <div class="kpi-details">
+                <span class="text-muted"><?= $statsLivraisons['en_cours'] ?> en transit, <?= $statsLivraisons['prevue'] ?> en attente</span>
             </div>
         </div>
 
-        <div class="stat-card stat-factures">
-            <div class="stat-icon">💰</div>
-            <div class="stat-content">
-                <h3>Factures</h3>
-                <div class="stat-value"><?php echo number_format($statsFactures['montant_total_ht'], 2); ?>€</div>
-                <div class="stat-details">
-                    <span class="emise">Émises: <?php echo $statsFactures['emise']; ?></span>
-                    <span class="payee">Payées: <?php echo $statsFactures['payee']; ?></span>
-                    <span class="impayee">Impayées: <?php echo $statsFactures['impayee']; ?></span>
-                </div>
+        <div class="erp-card kpi-card border-top-danger">
+            <div class="kpi-title">Alertes Maintenance</div>
+            <div class="kpi-value text-danger"><?= $statsMaintenances['dues'] ?></div>
+            <div class="kpi-details">
+                <span class="text-muted">Interventions programmées requises</span>
             </div>
         </div>
 
-        <div class="stat-card stat-maintenance">
-            <div class="stat-icon">🔧</div>
-            <div class="stat-content">
-                <h3>Maintenance</h3>
-                <div class="stat-value"><?php echo $statsMaintenances['dues']; ?></div>
-                <div class="stat-details">
-                    <span>Interventions prévues</span>
-                </div>
+        <div class="erp-card kpi-card border-top-success">
+            <div class="kpi-title">CA (30 derniers jours)</div>
+            <div class="kpi-value"><?= number_format($statsFactures['montant_total_ht'], 0, ',', ' ') ?> €</div>
+            <div class="kpi-details">
+                <span class="text-muted"><?= $statsFactures['impayee'] ?> facture(s) en attente de paiement</span>
             </div>
         </div>
-    </section>
+    </div>
 
-    <!-- ========== SECTION PRINCIPALE ========== -->
-    <div class="main-content">
-        <!-- COLONNE 1: LIVRAISONS EN COURS -->
-        <section class="section-livraisons">
-            <h2>📋 Livraisons en Cours</h2>
-            <div class="livraisons-list">
-                <?php if (empty($livraisonsDetailees)): ?>
-                    <div class="empty-state">
-                        <p>Aucune livraison en cours</p>
-                    </div>
-                <?php else: ?>
-                    <table class="table-livraisons">
+    <div class="erp-main-grid">
+        
+        <div class="erp-col-left">
+            <div class="erp-card">
+                <div class="erp-card-header">
+                    <h2>Livraisons en cours de transit</h2>
+                </div>
+                <div class="erp-card-body p-0">
+                    <?php if (empty($livraisonsDetailees)): ?>
+                        <div class="erp-empty-state">Aucune livraison en transit actuellement.</div>
+                    <?php else: ?>
+                        <table class="erp-table">
+                            <thead>
+                                <tr>
+                                    <th>Réf. Commande</th>
+                                    <th>Client (Raison Sociale)</th>
+                                    <th>Volume / Poids</th>
+                                    <th>Statut</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <?php foreach ($livraisonsDetailees as $item): 
+                                    $livraison = $item['livraison'];
+                                    $client = $item['client'];
+                                ?>
+                                    <tr>
+                                        <td><strong><?= htmlspecialchars($livraison->getReference()) ?></strong></td>
+                                        <td><?= htmlspecialchars($client ? $client->getRaisonSociale() : 'Non assigné') ?></td>
+                                        <td class="text-muted"><?= number_format($livraison->getVolumeM3(), 2) ?> m³ / <?= number_format($livraison->getPoidsKg(), 0) ?> kg</td>
+                                        <td><span class="badge badge-warning">En transit</span></td>
+                                    </tr>
+                                <?php endforeach; ?>
+                            </tbody>
+                        </table>
+                    <?php endif; ?>
+                </div>
+            </div>
+            
+            <div class="erp-card mt-3">
+                <div class="erp-card-header">
+                    <h2>Dépôts Logistiques</h2>
+                </div>
+                <div class="erp-card-body p-0">
+                    <table class="erp-table">
                         <thead>
                             <tr>
-                                <th>Référence</th>
-                                <th>Client</th>
-                                <th>Poids</th>
-                                <th>Volume</th>
-                                <th>Statut</th>
+                                <th>Nom du dépôt</th>
+                                <th>Localisation</th>
+                                <th>Contact</th>
                             </tr>
                         </thead>
                         <tbody>
-                            <?php foreach ($livraisonsDetailees as $item): 
-                                $livraison = $item['livraison'];
-                                $client = $item['client'];
-                                $statutClass = 'statut-' . $livraison->getStatut();
-                            ?>
-                                <tr class="livraison-row">
-                                    <td class="ref"><strong><?php echo htmlspecialchars($livraison->getReference()); ?></strong></td>
-                                    <td class="client"><?php echo htmlspecialchars($client ? $client->getRaisonSociale() : 'N/A'); ?></td>
-                                    <td class="poids"><?php echo number_format($livraison->getPoidsKg(), 2); ?> kg</td>
-                                    <td class="volume"><?php echo number_format($livraison->getVolumeM3(), 3); ?> m³</td>
-                                    <td class="<?php echo $statutClass; ?>">
-                                        <?php echo ucfirst(str_replace('_', ' ', $livraison->getStatut())); ?>
-                                    </td>
+                            <?php foreach ($listeDepots as $depot): ?>
+                                <tr>
+                                    <td><strong><?= htmlspecialchars($depot['nom']) ?></strong></td>
+                                    <td><?= htmlspecialchars($depot['ville']) ?> (<?= htmlspecialchars($depot['code_postal']) ?>)</td>
+                                    <td class="text-muted"><?= htmlspecialchars($depot['tel'] ?? 'N/C') ?></td>
                                 </tr>
                             <?php endforeach; ?>
                         </tbody>
                     </table>
-                <?php endif; ?>
+                </div>
             </div>
-        </section>
+        </div>
 
-        <!-- COLONNE 2: VÉHICULES & CONTRÔLES -->
-        <aside class="sidebar">
-            <!-- VÉHICULES EN SERVICE -->
-            <section class="section-sidebar">
-                <h3>🚗 Véhicules en Service</h3>
-                <div class="vehicles-list">
+        <div class="erp-col-right">
+            <div class="erp-card">
+                <div class="erp-card-header bg-light-danger">
+                    <h2 class="text-danger">Interventions requises</h2>
+                </div>
+                <div class="erp-card-body">
+                    <?php if (empty($maintenancesDetailees)): ?>
+                        <div class="erp-empty-state text-success">Aucune maintenance en souffrance.</div>
+                    <?php else: ?>
+                        <ul class="erp-list">
+                            <?php foreach ($maintenancesDetailees as $m): ?>
+                                <li>
+                                    <div class="list-title"><?= htmlspecialchars($m['immatriculation']) ?></div>
+                                    <div class="list-desc"><?= htmlspecialchars($m['maintenance']->getTypeIntervention()) ?></div>
+                                    <div class="list-meta text-danger">Prévue le : <?= date('d/m/Y', strtotime($m['maintenance']->getDateIntervention())) ?></div>
+                                </li>
+                            <?php endforeach; ?>
+                        </ul>
+                    <?php endif; ?>
+                </div>
+            </div>
+
+            <div class="erp-card mt-3">
+                <div class="erp-card-header">
+                    <h2>Véhicules Actifs</h2>
+                </div>
+                <div class="erp-card-body p-0">
                     <?php if (empty($vehiculesEnService)): ?>
-                        <p class="text-muted">Aucun véhicule en service</p>
+                         <div class="erp-empty-state">Tous les véhicules sont au dépôt.</div>
                     <?php else: ?>
-                        <?php foreach ($vehiculesEnService as $vehicule): ?>
-                            <div class="vehicle-card">
-                                <div class="vehicle-header">
-                                    <strong><?php echo htmlspecialchars($vehicule->getImmatriculation()); ?></strong>
-                                </div>
-                                <div class="vehicle-details">
-                                    <p><?php echo htmlspecialchars($vehicule->getModele()); ?></p>
-                                    <p class="capacity">
-                                        Capacité: <?php echo number_format($vehicule->getCapaciteKg(), 0); ?> kg
-                                    </p>
-                                </div>
-                            </div>
-                        <?php endforeach; ?>
+                        <ul class="erp-list compact">
+                            <?php foreach ($vehiculesEnService as $vehicule): ?>
+                                <li>
+                                    <div class="list-title"><?= htmlspecialchars($vehicule->getImmatriculation()) ?></div>
+                                    <div class="list-desc"><?= htmlspecialchars($vehicule->getModele()) ?></div>
+                                </li>
+                            <?php endforeach; ?>
+                        </ul>
                     <?php endif; ?>
                 </div>
-            </section>
+            </div>
+        </div>
 
-            <!-- DÉPÔTS -->
-            <section class="section-sidebar">
-                <h3>📍 Dépôts</h3>
-                <div class="depots-list">
-                    <?php if (empty($listeDepots)): ?>
-                        <p class="text-muted">Aucun dépôt enregistré</p>
-                    <?php else: ?>
-                        <?php foreach ($listeDepots as $depot): ?>
-                            <div class="depot-card">
-                                <div class="depot-name">
-                                    <strong><?php echo htmlspecialchars($depot['nom']); ?></strong>
-                                </div>
-                                <div class="depot-info">
-                                    <p><?php echo htmlspecialchars($depot['ville']); ?></p>
-                                    <p class="contact"><?php echo htmlspecialchars($depot['tel'] ?? 'N/A'); ?></p>
-                                </div>
-                            </div>
-                        <?php endforeach; ?>
-                    <?php endif; ?>
-                </div>
-            </section>
-
-            <!-- MAINTENANCES DUES -->
-            <section class="section-sidebar alert-section">
-                <h3>🔧 Maintenances Dues</h3>
-                <div class="maintenances-list">
-                    <?php if (empty($maintenancesDues)): ?>
-                        <p class="text-success">✓ Pas de maintenance urgente</p>
-                    <?php else: ?>
-                        <?php foreach ($maintenancesDues as $maintenance): 
-                            $vehicule = $vehiculeDAO->getById($maintenance->getIdVehicule());
-                        ?>
-                            <div class="maintenance-alert">
-                                <div class="alert-title">
-                                    <?php echo htmlspecialchars($vehicule ? $vehicule->getImmatriculation() : 'N/A'); ?>
-                                </div>
-                                <div class="alert-details">
-                                    <p><?php echo htmlspecialchars($maintenance->getTypeIntervention()); ?></p>
-                                    <p class="date">
-                                        Prévue: <?php echo date('d/m/Y', strtotime($maintenance->getDateIntervention())); ?>
-                                    </p>
-                                </div>
-                            </div>
-                        <?php endforeach; ?>
-                    <?php endif; ?>
-                </div>
-            </section>
-        </aside>
     </div>
-
-    <!-- ========== SECTION CARTE GPS ========== -->
-    <section class="section-carte">
-        <h2>🗺️ Suivi GPS Temps Réel</h2>
-        <div class="carte-container">
-            <table class="table-gps">
-                <thead>
-                    <tr>
-                        <th>Véhicule</th>
-                        <th>Latitude</th>
-                        <th>Longitude</th>
-                        <th>Vitesse</th>
-                        <th>Mise à jour</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <?php if (empty($listeVehiculesSurCarte)): ?>
-                        <tr>
-                            <td colspan="5" class="text-center text-muted">Aucun véhicule actuellement suivi</td>
-                        </tr>
-                    <?php else: ?>
-                        <?php foreach ($listeVehiculesSurCarte as $vehicule): ?>
-                            <tr class="gps-row">
-                                <td class="vehicle-info">
-                                    <strong><?php echo htmlspecialchars($vehicule['immatriculation']); ?></strong>
-                                    <br><small><?php echo htmlspecialchars($vehicule['modele']); ?></small>
-                                </td>
-                                <td><?php echo number_format($vehicule['latitude'], 7); ?></td>
-                                <td><?php echo number_format($vehicule['longitude'], 7); ?></td>
-                                <td class="vitesse">
-                                    <?php echo number_format($vehicule['vitesse_kmh'] ?? 0, 1); ?> km/h
-                                </td>
-                                <td class="horodatage">
-                                    <?php echo date('d/m H:i', strtotime($vehicule['horodatage'])); ?>
-                                </td>
-                            </tr>
-                        <?php endforeach; ?>
-                    <?php endif; ?>
-                </tbody>
-            </table>
-        </div>
-    </section>
-
-    <!-- ========== SECTION FACTURES ========== -->
-    <section class="section-factures">
-        <h2>💼 Factures Récentes</h2>
-        <div class="factures-summary">
-            <div class="facture-stat">
-                <span class="label">Factures Émises</span>
-                <span class="value"><?php echo $statsFactures['emise']; ?></span>
-            </div>
-            <div class="facture-stat">
-                <span class="label">Factures Payées</span>
-                <span class="value success"><?php echo $statsFactures['payee']; ?></span>
-            </div>
-            <div class="facture-stat">
-                <span class="label">Factures Impayées</span>
-                <span class="value danger"><?php echo $statsFactures['impayee']; ?></span>
-            </div>
-            <div class="facture-stat">
-                <span class="label">CA (30j)</span>
-                <span class="value"><?php echo number_format($statsFactures['montant_total_ht'], 0); ?>€</span>
-            </div>
-        </div>
-    </section>
 </div>

@@ -15,12 +15,10 @@ include_once "$racine/core/DAO/MaintenanceDAO.php";
 include_once "$racine/core/DAO/DepotDAO.php";
 include_once "$racine/core/DAO/ChauffeurDAO.php";
 include_once "$racine/core/DAO/ClientDAO.php";
-include_once "$racine/core/DAO/TrajetDAO.php";
-include_once "$racine/core/DAO/GpsDAO.php";
 
 $bd = Connexion::connexionPDO();
 
-// ========== STATISTIQUES GLOBALES ==========
+// ========== INSTANCIATION DES DAO ==========
 $vehiculeDAO = new VehiculeDAO();
 $livraisonDAO = new LivraisonDAO();
 $factureDAO = new FactureDAO();
@@ -29,7 +27,7 @@ $depotDAO = new DepotDAO();
 $chauffeurDAO = new ChauffeurDAO();
 $clientDAO = new ClientDAO();
 
-// Véhicules par statut
+// ========== STATISTIQUES VÉHICULES ==========
 $vehiculesDisponibles = $vehiculeDAO->getByStatut('disponible');
 $vehiculesEnService = $vehiculeDAO->getByStatut('en_service');
 $vehiculesEnEntretien = $vehiculeDAO->getByStatut('en_entretien');
@@ -43,7 +41,7 @@ $statsVehicules = [
     'hors_service' => count($vehiculesHorsService)
 ];
 
-// Livraisons par statut
+// ========== STATISTIQUES LIVRAISONS ==========
 $livraisonsEnCours = $livraisonDAO->getByStatut('en_cours');
 $livraisonsLivrees = $livraisonDAO->getByStatut('livree');
 $livraisonsPrevues = $livraisonDAO->getByStatut('prevue');
@@ -57,25 +55,19 @@ $statsLivraisons = [
     'annulee' => count($livraisonsAnnulees)
 ];
 
-// Factures par statut
+// ========== STATISTIQUES FACTURES ==========
 $facturesEmises = $factureDAO->getByStatut('emise');
-$facturesPay = $factureDAO->getByStatut('payee');
-$facturesImpay = $factureDAO->getByStatut('impayee');
+$facturesPayees = $factureDAO->getByStatut('payee');
+$facturesImpayees = $factureDAO->getByStatut('impayee');
 
 $statsFactures = [
     'emise' => count($facturesEmises),
-    'payee' => count($facturesPay),
-    'impayee' => count($facturesImpay),
+    'payee' => count($facturesPayees),
+    'impayee' => count($facturesImpayees),
     'montant_total_ht' => $factureDAO->getChiffreAffaires(date('Y-m-d', strtotime('-30 days')), date('Y-m-d'))
 ];
 
-// Maintenances dues
-$maintenancesDues = $maintenanceDAO->getByStatut('prevue');
-$statsMaintenances = [
-    'dues' => count($maintenancesDues)
-];
-
-// ========== LIVRAISONS DÉTAILLÉES EN COURS ==========
+// ========== LIVRAISONS DÉTAILLÉES (POUR LE TABLEAU) ==========
 $livraisonsDetailees = [];
 foreach ($livraisonsEnCours as $livraison) {
     $client = $clientDAO->getById($livraison->getIdClient());
@@ -85,37 +77,21 @@ foreach ($livraisonsEnCours as $livraison) {
     ];
 }
 
-// ========== VÉHICULES EN SERVICE SUR CARTE ==========
-$listeVehiculesSurCarte = [];
-foreach ($vehiculesEnService as $vehicule) {
-    // Chercher le trajet actif
-    $sql = "SELECT id_gps FROM trajet WHERE id_vehicule = :idV AND statut = 'en_cours'";
-    $stmt = $bd->prepare($sql);
-    $stmt->execute([':idV' => $vehicule->getId()]);
-    $trajetData = $stmt->fetch(PDO::FETCH_ASSOC);
-
-    if ($trajetData) {
-        // Récupérer la position GPS
-        $sqlGps = "SELECT * FROM gps WHERE id = :idG";
-        $stmtGps = $bd->prepare($sqlGps);
-        $stmtGps->execute([':idG' => $trajetData['id_gps']]);
-        $gpsData = $stmtGps->fetch(PDO::FETCH_ASSOC);
-
-        if ($gpsData) {
-            $listeVehiculesSurCarte[] = [
-                'id_vehicule' => $vehicule->getId(),
-                'immatriculation' => $vehicule->getImmatriculation(),
-                'modele' => $vehicule->getModele(),
-                'latitude' => $gpsData['latitude'],
-                'longitude' => $gpsData['longitude'],
-                'vitesse_kmh' => $gpsData['vitesse_kmh'],
-                'horodatage' => $gpsData['horodatage']
-            ];
-        }
-    }
+// ========== MAINTENANCES DUES ==========
+$maintenancesDues = $maintenanceDAO->getByStatut('prevue');
+$maintenancesDetailees = [];
+foreach ($maintenancesDues as $maintenance) {
+    $vehicule = $vehiculeDAO->getById($maintenance->getIdVehicule());
+    $maintenancesDetailees[] = [
+        'maintenance' => $maintenance,
+        'immatriculation' => $vehicule ? $vehicule->getImmatriculation() : 'N/A'
+    ];
 }
+$statsMaintenances = [
+    'dues' => count($maintenancesDues)
+];
 
-// ========== DÉPÔTS ==========
+// ========== LISTE DES DÉPÔTS ==========
 $sql = "SELECT * FROM depot";
 $req = $bd->query($sql);
 $listeDepots = [];
@@ -123,8 +99,9 @@ while ($row = $req->fetch(PDO::FETCH_ASSOC)) {
     $listeDepots[] = $row;
 }
 
-$titre = "Tableau de Bord - Suivi Flotte";
+// Variables pour l'entête
+$titre = "Tableau de Bord - Synthèse";
 $selectedCategory = "Tableau de Bord";
 
-// Inclure la vue avec toutes les variables préparées
+// Appel de la vue
 include_once "$racine/vue/vueTableauBord.php";

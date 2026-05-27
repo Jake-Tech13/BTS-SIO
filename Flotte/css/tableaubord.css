@@ -1,557 +1,225 @@
-/* ========== TABLEAU DE BORD - STYLES GÉNÉRAUX ========== */
+/* ========== THEME ERP / GLPI STYLE ========== */
+:root {
+    --erp-primary: #206bc4;
+    --erp-secondary: #626976;
+    --erp-success: #2fb344;
+    --erp-info: #4299e1;
+    --erp-warning: #f76707;
+    --erp-danger: #d63939;
+    --erp-bg: #f4f6fa;
+    --erp-border: #e6e8e9;
+    --erp-text: #1d273b;
+    --erp-text-muted: #6e7582;
+}
 
-.tableau-bord-container {
-    max-width: 1400px;
-    margin: 0 auto;
+.erp-dashboard {
+    background-color: var(--erp-bg);
     padding: 20px;
-    background-color: #f5f7fa;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    color: var(--erp-text);
+    min-height: calc(100vh - 80px); /* Ajustement par rapport au header de base.css */
 }
 
-.tableau-bord-header {
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    color: white;
-    padding: 30px;
-    border-radius: 10px;
-    margin-bottom: 30px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+/* Header */
+.erp-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    margin-bottom: 25px;
+    border-bottom: 1px solid var(--erp-border);
+    padding-bottom: 10px;
 }
 
-.tableau-bord-header h1 {
-    margin: 0 0 10px 0;
-    font-size: 2em;
-    font-weight: 700;
-}
-
-.date-heure {
+.erp-title {
     margin: 0;
-    font-size: 0.9em;
-    opacity: 0.9;
-}
-
-/* ========== STATISTIQUES GLOBALES ========== */
-
-.stats-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-    gap: 20px;
-    margin-bottom: 30px;
-}
-
-.stat-card {
-    background: white;
-    border-radius: 10px;
-    padding: 20px;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-    display: flex;
-    gap: 15px;
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-}
-
-.stat-card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-}
-
-.stat-icon {
-    font-size: 2.5em;
-    display: flex;
-    align-items: center;
-    min-width: 60px;
-    justify-content: center;
-}
-
-.stat-content {
-    flex: 1;
-}
-
-.stat-content h3 {
-    margin: 0 0 10px 0;
-    color: #333;
-    font-size: 0.9em;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
+    font-size: 1.5rem;
     font-weight: 600;
+    color: var(--erp-text);
 }
 
-.stat-value {
-    font-size: 2em;
-    font-weight: 700;
-    color: #667eea;
+.erp-subtitle {
+    font-size: 0.9rem;
+    color: var(--erp-text-muted);
+}
+
+.erp-timestamp {
+    font-size: 0.85rem;
+    color: var(--erp-text-muted);
+}
+
+/* Grille des KPIs */
+.erp-kpi-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 15px;
+    margin-bottom: 25px;
+}
+
+.erp-card {
+    background: #ffffff;
+    border: 1px solid var(--erp-border);
+    border-radius: 4px;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04);
+}
+
+.kpi-card {
+    padding: 15px;
+    display: flex;
+    flex-direction: column;
+}
+
+.border-top-primary { border-top: 3px solid var(--erp-primary); }
+.border-top-success { border-top: 3px solid var(--erp-success); }
+.border-top-warning { border-top: 3px solid var(--erp-warning); }
+.border-top-danger { border-top: 3px solid var(--erp-danger); }
+.border-top-info { border-top: 3px solid var(--erp-info); }
+
+.kpi-title {
+    font-size: 0.85rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    color: var(--erp-text-muted);
     margin-bottom: 10px;
 }
 
-.stat-details {
+.kpi-value {
+    font-size: 2rem;
+    font-weight: 700;
+    line-height: 1;
+    margin-bottom: 15px;
+}
+
+.kpi-details {
+    font-size: 0.85rem;
     display: flex;
-    flex-direction: column;
     gap: 5px;
-    font-size: 0.85em;
-    color: #666;
+    flex-wrap: wrap;
 }
 
-.stat-details span {
-    padding: 3px 0;
-}
-
-.stat-details .disponible { color: #10b981; }
-.stat-details .en_service { color: #f59e0b; }
-.stat-details .en_entretien { color: #ef4444; }
-.stat-details .hors_service { color: #999; }
-.stat-details .prevue { color: #3b82f6; }
-.stat-details .en_cours { color: #f59e0b; }
-.stat-details .livree { color: #10b981; }
-.stat-details .emise { color: #3b82f6; }
-.stat-details .payee { color: #10b981; }
-.stat-details .impayee { color: #ef4444; }
-
-/* ========== SECTION PRINCIPALE ========== */
-
-.main-content {
+/* Grille principale */
+.erp-main-grid {
     display: grid;
     grid-template-columns: 2fr 1fr;
     gap: 20px;
-    margin-bottom: 30px;
 }
 
-@media (max-width: 1024px) {
-    .main-content {
+@media (max-width: 992px) {
+    .erp-main-grid {
         grid-template-columns: 1fr;
     }
 }
 
-/* ========== LIVRAISONS ========== */
-
-.section-livraisons {
-    background: white;
-    border-radius: 10px;
-    padding: 25px;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+.erp-card-header {
+    padding: 12px 15px;
+    border-bottom: 1px solid var(--erp-border);
+    background-color: rgba(248, 249, 250, 0.5);
 }
 
-.section-livraisons h2 {
-    margin: 0 0 20px 0;
-    color: #333;
-    font-size: 1.5em;
-    border-bottom: 3px solid #667eea;
-    padding-bottom: 10px;
+.erp-card-header h2 {
+    margin: 0;
+    font-size: 1rem;
+    font-weight: 600;
 }
 
-.empty-state {
-    text-align: center;
-    padding: 40px 20px;
-    color: #999;
-    font-style: italic;
+.erp-card-body {
+    padding: 15px;
 }
 
-.table-livraisons {
+.p-0 { padding: 0 !important; }
+.mt-3 { margin-top: 20px !important; }
+.bg-light-danger { background-color: #fef2f2 !important; border-bottom-color: #fecaca; }
+
+/* Tableaux */
+.erp-table {
     width: 100%;
     border-collapse: collapse;
+    font-size: 0.9rem;
 }
 
-.table-livraisons thead {
-    background-color: #f3f4f6;
-    border-bottom: 2px solid #e5e7eb;
-}
-
-.table-livraisons th {
-    padding: 12px;
+.erp-table th {
     text-align: left;
+    padding: 10px 15px;
+    background-color: #f8f9fa;
+    color: var(--erp-text-muted);
     font-weight: 600;
-    color: #333;
-    font-size: 0.9em;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
+    border-bottom: 2px solid var(--erp-border);
 }
 
-.table-livraisons td {
-    padding: 15px 12px;
-    border-bottom: 1px solid #e5e7eb;
+.erp-table td {
+    padding: 12px 15px;
+    border-bottom: 1px solid var(--erp-border);
+    vertical-align: middle;
 }
 
-.livraison-row:hover {
-    background-color: #f9fafb;
+.erp-table tbody tr:hover {
+    background-color: #fbfbfc;
 }
 
-.table-livraisons .ref {
-    color: #667eea;
+.erp-table tbody tr:last-child td {
+    border-bottom: none;
+}
+
+/* Listes (Sidebar) */
+.erp-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.erp-list li {
+    padding: 12px 15px;
+    border-bottom: 1px solid var(--erp-border);
+}
+
+.erp-list li:last-child {
+    border-bottom: none;
+}
+
+.erp-list.compact li {
+    padding: 8px 15px;
+}
+
+.list-title {
     font-weight: 600;
+    font-size: 0.95rem;
 }
 
-.table-livraisons .client {
-    color: #333;
-}
-
-.table-livraisons .poids,
-.table-livraisons .volume {
-    color: #666;
-    font-size: 0.9em;
-}
-
-.statut-en_cours {
-    background-color: #fef3c7;
-    color: #92400e;
-    padding: 6px 12px;
-    border-radius: 6px;
-    font-weight: 600;
-    font-size: 0.85em;
-    display: inline-block;
-}
-
-.statut-livree {
-    background-color: #dcfce7;
-    color: #166534;
-    padding: 6px 12px;
-    border-radius: 6px;
-    font-weight: 600;
-    font-size: 0.85em;
-    display: inline-block;
-}
-
-.statut-prevue {
-    background-color: #dbeafe;
-    color: #1e40af;
-    padding: 6px 12px;
-    border-radius: 6px;
-    font-weight: 600;
-    font-size: 0.85em;
-    display: inline-block;
-}
-
-/* ========== SIDEBAR ========== */
-
-.sidebar {
-    display: flex;
-    flex-direction: column;
-    gap: 20px;
-}
-
-.section-sidebar {
-    background: white;
-    border-radius: 10px;
-    padding: 20px;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-}
-
-.section-sidebar h3 {
-    margin: 0 0 15px 0;
-    color: #333;
-    font-size: 1.1em;
-    border-bottom: 2px solid #667eea;
-    padding-bottom: 10px;
-}
-
-.vehicles-list,
-.depots-list,
-.maintenances-list {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-}
-
-.vehicle-card,
-.depot-card {
-    border: 1px solid #e5e7eb;
-    border-radius: 8px;
-    padding: 12px;
-    background-color: #f9fafb;
-    transition: all 0.3s ease;
-}
-
-.vehicle-card:hover,
-.depot-card:hover {
-    background-color: #f3f4f6;
-    border-color: #667eea;
-}
-
-.vehicle-header,
-.depot-name {
-    color: #667eea;
-    font-weight: 600;
-    margin-bottom: 8px;
-}
-
-.vehicle-details,
-.depot-info {
-    font-size: 0.85em;
-    color: #666;
-}
-
-.vehicle-details p,
-.depot-info p {
-    margin: 4px 0;
-}
-
-.capacity,
-.contact {
-    font-size: 0.8em;
-    color: #999;
-}
-
-/* ========== ALERTS ET MAINTENANCE ========== */
-
-.alert-section {
-    border-left: 4px solid #ef4444;
-}
-
-.maintenance-alert {
-    background-color: #fef2f2;
-    border: 1px solid #fecaca;
-    border-radius: 6px;
-    padding: 10px;
-    margin-bottom: 10px;
-}
-
-.maintenance-alert:last-child {
-    margin-bottom: 0;
-}
-
-.alert-title {
-    color: #991b1b;
-    font-weight: 600;
-    margin-bottom: 5px;
-}
-
-.alert-details {
-    font-size: 0.85em;
-    color: #7f1d1d;
-}
-
-.alert-details p {
-    margin: 3px 0;
-}
-
-.alert-details .date {
-    font-size: 0.8em;
-    color: #b91c1c;
-}
-
-.text-muted {
-    color: #999;
-    font-size: 0.9em;
-    text-align: center;
-}
-
-.text-success {
-    color: #10b981;
-    font-weight: 600;
-    text-align: center;
-}
-
-/* ========== SECTION CARTE GPS ========== */
-
-.section-carte {
-    background: white;
-    border-radius: 10px;
-    padding: 25px;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-    margin-bottom: 30px;
-}
-
-.section-carte h2 {
-    margin: 0 0 20px 0;
-    color: #333;
-    font-size: 1.5em;
-    border-bottom: 3px solid #667eea;
-    padding-bottom: 10px;
-}
-
-.carte-container {
-    overflow-x: auto;
-}
-
-.table-gps {
-    width: 100%;
-    border-collapse: collapse;
-}
-
-.table-gps thead {
-    background-color: #f3f4f6;
-    border-bottom: 2px solid #e5e7eb;
-}
-
-.table-gps th {
-    padding: 12px;
-    text-align: left;
-    font-weight: 600;
-    color: #333;
-    font-size: 0.9em;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-}
-
-.table-gps td {
-    padding: 12px;
-    border-bottom: 1px solid #e5e7eb;
-    font-size: 0.9em;
-}
-
-.gps-row:hover {
-    background-color: #f9fafb;
-}
-
-.vehicle-info {
-    color: #667eea;
-    font-weight: 500;
-}
-
-.vehicle-info small {
-    color: #999;
-    display: block;
+.list-desc {
+    font-size: 0.85rem;
+    color: var(--erp-text-muted);
     margin-top: 3px;
 }
 
-.vitesse {
-    color: #f59e0b;
+.list-meta {
+    font-size: 0.8rem;
+    margin-top: 5px;
+    font-weight: 500;
+}
+
+/* Utilitaires */
+.badge {
+    display: inline-block;
+    padding: 3px 8px;
+    font-size: 0.75rem;
     font-weight: 600;
-}
-
-.horodatage {
-    color: #666;
-    font-size: 0.85em;
-}
-
-.text-center {
-    text-align: center;
-}
-
-/* ========== SECTION FACTURES ========== */
-
-.section-factures {
-    background: white;
-    border-radius: 10px;
-    padding: 25px;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-}
-
-.section-factures h2 {
-    margin: 0 0 20px 0;
-    color: #333;
-    font-size: 1.5em;
-    border-bottom: 3px solid #667eea;
-    padding-bottom: 10px;
-}
-
-.factures-summary {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-    gap: 15px;
-}
-
-.facture-stat {
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    color: white;
-    padding: 15px;
-    border-radius: 8px;
-    text-align: center;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-}
-
-.facture-stat .label {
-    display: block;
-    font-size: 0.85em;
-    opacity: 0.9;
-    margin-bottom: 8px;
+    border-radius: 3px;
     text-transform: uppercase;
     letter-spacing: 0.5px;
 }
 
-.facture-stat .value {
-    display: block;
-    font-size: 1.8em;
-    font-weight: 700;
-}
+.badge-success { background: #e6f6e8; color: var(--erp-success); }
+.badge-warning { background: #fef0e6; color: var(--erp-warning); }
+.badge-danger { background: #fcebeb; color: var(--erp-danger); }
+.badge-info { background: #eaf4fc; color: var(--erp-info); }
 
-.facture-stat .value.success {
-    color: #4ade80;
-}
+.text-muted { color: var(--erp-text-muted) !important; }
+.text-danger { color: var(--erp-danger) !important; }
+.text-success { color: var(--erp-success) !important; }
 
-.facture-stat .value.danger {
-    color: #f87171;
-}
-
-/* ========== RESPONSIVE ========== */
-
-@media (max-width: 768px) {
-    .tableau-bord-container {
-        padding: 10px;
-    }
-
-    .tableau-bord-header {
-        padding: 20px;
-    }
-
-    .tableau-bord-header h1 {
-        font-size: 1.5em;
-    }
-
-    .stats-grid {
-        grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-        gap: 10px;
-    }
-
-    .stat-card {
-        padding: 15px;
-        flex-direction: column;
-        text-align: center;
-    }
-
-    .stat-icon {
-        min-width: auto;
-    }
-
-    .stat-details {
-        flex-direction: row;
-        flex-wrap: wrap;
-        gap: 8px;
-        justify-content: center;
-    }
-
-    .section-livraisons,
-    .section-sidebar,
-    .section-carte,
-    .section-factures {
-        padding: 15px;
-    }
-
-    .section-livraisons h2,
-    .section-carte h2,
-    .section-factures h2 {
-        font-size: 1.2em;
-    }
-
-    .table-livraisons th,
-    .table-gps th {
-        padding: 8px;
-        font-size: 0.8em;
-    }
-
-    .table-livraisons td,
-    .table-gps td {
-        padding: 8px;
-    }
-
-    .factures-summary {
-        grid-template-columns: 1fr 1fr;
-    }
-}
-
-/* ========== ANIMATION ========== */
-
-@keyframes fadeIn {
-    from {
-        opacity: 0;
-        transform: translateY(10px);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
-}
-
-.stat-card,
-.section-sidebar,
-.section-livraisons,
-.section-carte,
-.section-factures {
-    animation: fadeIn 0.5s ease;
+.erp-empty-state {
+    padding: 20px;
+    text-align: center;
+    color: var(--erp-text-muted);
+    font-style: italic;
+    font-size: 0.9rem;
 }
